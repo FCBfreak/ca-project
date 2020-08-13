@@ -16,10 +16,10 @@ pipeline {
       }
       steps {
         unstash 'code'
-        sh 'zip -r artifact.zip app'
-        // script{
-          // zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
-        // }
+        // sh 'zip -r artifact.zip app'
+        script{
+          zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
+        }
 
       }
     }
@@ -32,7 +32,8 @@ pipeline {
           }
           steps {
             unstash 'code'
-            archiveArtifacts '/artifact.zip'
+            zip zipFile: 'test.zip', archive: false, dir: 'app'
+            archiveArtifacts artifacts: 'test.zip', fingerprint: true
           }
         }
 
