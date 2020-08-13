@@ -2,7 +2,8 @@
 FROM python:3.7
 
 # installing packages
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip \
+    pip install -r requirements.txt
 
 # declaring label
 LABEL Name=ca-project Version=1.0
