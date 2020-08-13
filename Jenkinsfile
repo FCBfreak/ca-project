@@ -1,10 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('stashing') {
-      // when {
-      //   branch 'master'
-      // }
+    stage('stash always') {
       options {
         // syntax for git pull
         skipDefaultCheckout(true)
@@ -18,31 +15,23 @@ pipeline {
       parallel {
         stage('create artifact') {
           options {
-            // syntax for git pull
             skipDefaultCheckout(true)
           }
           steps {
             unstash 'code'
-            sh 'ls'
-            sh 'echo "artifact"'
             archiveArtifacts(artifacts: 'app/build/libs/', allowEmptyArchive: true)
           }
         }
 
         stage('dockerize application') {
-          options {
-            // syntax for git pull
-            skipDefaultCheckout(true)
+          environment {
+            DOCKERCREDS = credentials('docker_login')
           }
           when {
             branch 'master'
           }
-          environment {
-            DOCKERCREDS = credentials('docker_login')
-          }
           steps {
             unstash 'code'
-            sh 'ls'
             sh './build-docker.sh'
             sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
             sh './push-docker.sh'
