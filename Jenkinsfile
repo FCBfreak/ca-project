@@ -9,9 +9,10 @@ pipeline {
         stash(excludes: '.git', name: 'code')
       }
     }
-    
+
     stage('component test') {
       steps {
+        unstash 'code'
         sh './component-test.sh'
       }
     }
