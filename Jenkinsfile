@@ -11,20 +11,6 @@ pipeline {
       }
     }
 
-    stage('zip artifact') {
-      options {
-        // syntax for git pull
-        skipDefaultCheckout(true)
-      }
-      steps {
-        unstash 'code'
-        script{
-            zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
-          }
-        sh 'ls'
-      }
-    }
-
     stage('artifact and docker') {
       parallel {
         stage('create artifact') {
@@ -32,7 +18,13 @@ pipeline {
             skipDefaultCheckout(true)
           }
           steps {
-            archiveArtifacts(artifacts: 'app/build/libs/', allowEmptyArchive: true)
+            unstash 'code'
+            script{
+              zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
+            }
+          }
+          post {
+            archiveArtifacts(artifacts: 'artifact.zip', allowEmptyArchive: true)
           }
         }
 
