@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('stash always') {
       options {
-        // syntax for git pull
         skipDefaultCheckout(true)
       }
       steps {
@@ -13,14 +12,14 @@ pipeline {
 
     stage('zip artifact') {
       options {
-        // syntax for git pull
         skipDefaultCheckout(true)
       }
       steps {
         unstash 'code'
-        script{
+        script {
           zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
         }
+
       }
     }
 
@@ -32,24 +31,25 @@ pipeline {
           }
           steps {
             unstash 'code'
-            archiveArtifacts(artifacts: 'artifact.zip', allowEmptyArchive: true)
+            archiveArtifacts '/artifact.zip'
           }
         }
 
         stage('dockerize application') {
-          environment {
-            DOCKERCREDS = credentials('docker_login')
-          }
           when {
             branch 'master'
+          }
+          environment {
+            DOCKERCREDS = credentials('docker_login')
           }
           steps {
             unstash 'code'
             sh './build-docker.sh'
             sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
             sh './push-docker.sh'
-          } 
+          }
         }
+
       }
     }
 
