@@ -10,28 +10,28 @@ pipeline {
       }
     }
 
-    stage('testing') {
-      parallel {
-        stage('docker-compose test') {
-          options {
-            skipDefaultCheckout(true)
-          }
-          steps {
-            unstash 'code'
-            sh './component-test.sh'
-          }
-        }
-        // stage('unit test') {
-        //   options {
-        //     skipDefaultCheckout(true)
-        //   }
-        //   steps {
-        //     unstash 'code'
-        //     sh './unit-test.sh'
-        //   }
-        // }
-      }
-    }
+    // stage('testing') {
+    //   parallel {
+    //     stage('docker-compose test') {
+    //       options {
+    //         skipDefaultCheckout(true)
+    //       }
+    //       steps {
+    //         unstash 'code'
+    //         sh './component-test.sh'
+    //       }
+    //     }
+    //     stage('unit test') {
+    //       options {
+    //         skipDefaultCheckout(true)
+    //       }
+    //       steps {
+    //         unstash 'code'
+    //         sh './unit-test.sh'
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('artifact and docker') {
       parallel {
