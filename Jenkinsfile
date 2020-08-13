@@ -30,7 +30,7 @@ pipeline {
           }
           steps {
             unstash 'code'
-            archiveArtifacts artifacts: 'arhive.zip', fingerprint: true, allowEmpty: true
+            archiveArtifacts artifacts: 'arhive.zip', fingerprint: true
           }
         }
 
