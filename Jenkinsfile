@@ -34,7 +34,7 @@ pipeline {
             sh 'build-docker.sh'
             sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
             sh 'push-docker.sh'
-          }
+          } 
         }
 
       }
