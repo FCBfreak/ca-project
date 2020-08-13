@@ -4,13 +4,17 @@ pipeline {
     docker_username = 'emilkolvigraun'
   }
   agent any
-  stages {
-    stage('first stage'){
-      options {
-        skipDefaultCheckout(true)
+  stage('artifact and docker'){
+    parallel {
+      stage('create artifact'){
+        steps {
+          sh 'echo "artifact"'
+        }
       }
-      steps {
-        sh 'echo "hello"'
+      stage('dockerize application'){
+        steps {
+          sh 'echo "dockerize"'
+        }
       }
     }
   }
