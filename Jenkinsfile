@@ -1,9 +1,9 @@
 pipeline {
+  environment {
+    docker_username = 'emilkolvigraun'
+  }
   agent any
   stages {
-    environment {
-    docker_username = 'emilkolvigraun'
-    }
     stage('stashing') {
       options {
           skipDefaultCheckout(true)
