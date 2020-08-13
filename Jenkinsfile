@@ -2,12 +2,16 @@ pipeline {
   agent any
   stages {
     stage('stashing') {
+      options {
+          skipDefaultCheckout(true)
+      }
       when {
         branch 'master'
       }
-      steps {
-        stash 'code'
-      }
+      stash (
+        excludes: '.git',
+        name: 'code'
+      )
     }
 
     stage('artifact and docker') {
@@ -20,11 +24,11 @@ pipeline {
         }
 
         stage('dockerize application') {
-          when {
-            branch 'master'
-          }
           environment {
             DOCKERCREDS = credentials('docker_login')
+          }
+          when {
+            branch 'master'
           }
           steps {
             unstash 'code'
@@ -37,7 +41,6 @@ pipeline {
 
       }
     }
-
   }
   environment {
     docker_username = 'emilkolvigraun'
