@@ -1,6 +1,9 @@
 # using official python 3.7 image
 FROM python:3.7
 
+# copying requirements.txt into current dir
+COPY requirements.txt .
+
 # installing packages
 RUN pip install --upgrade pip \
     pip install -r requirements.txt
