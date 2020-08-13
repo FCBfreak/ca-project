@@ -11,6 +11,9 @@ pipeline {
     }
 
     stage('component test') {
+      options {
+        skipDefaultCheckout(true)
+      }
       steps {
         unstash 'code'
         sh './component-test.sh'
