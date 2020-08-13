@@ -10,6 +10,19 @@ pipeline {
         stash(excludes: '.git', name: 'code')
       }
     }
+    
+    stage('zip artifact') {
+      options {
+        // syntax for git pull
+        skipDefaultCheckout(true)
+      }
+      steps {
+        unstash 'code'
+        script{
+            zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
+          }
+      }
+    }
 
     stage('artifact and docker') {
       parallel {
@@ -18,10 +31,6 @@ pipeline {
             skipDefaultCheckout(true)
           }
           steps {
-            unstash 'code'
-            script{
-                zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
-             }
             archiveArtifacts(artifacts: 'app/build/libs/', allowEmptyArchive: true)
           }
         }
