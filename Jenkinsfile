@@ -16,8 +16,9 @@ pipeline {
       }
       steps {
             unstash 'code'
-            sh 'sudo apt install zip -y'
-            sh 'zip arhive.zip -r app'
+            script {
+              zip archive: true, dir: 'app', glob: '', zipFile: 'archive.zip'
+            }
       }
     }
 
@@ -29,7 +30,7 @@ pipeline {
           }
           steps {
             unstash 'code'
-            archiveArtifacts artifacts: 'arhive.zip', fingerprint: true
+            archiveArtifacts artifacts: 'arhive.zip', fingerprint: true, allowEmpty: true
           }
         }
 
