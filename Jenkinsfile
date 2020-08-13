@@ -11,10 +11,12 @@ pipeline {
       when {
         branch 'master'
       }
-      stash (
-        excludes: '.git',
-        name: 'code'
-      )
+      steps {
+        stash (
+          excludes: '.git',
+          name: 'code'
+        )
+      }
     }
 
     stage('artifact and docker') {
