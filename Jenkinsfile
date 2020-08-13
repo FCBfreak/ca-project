@@ -1,6 +1,9 @@
 pipeline {
   agent any
   stages {
+    environment {
+    docker_username = 'emilkolvigraun'
+    }
     stage('stashing') {
       when {
         branch 'master'
@@ -39,7 +42,5 @@ pipeline {
     }
 
   }
-  environment {
-    docker_username = 'emilkolvigraun'
-  }
+  
 }
