@@ -2,10 +2,11 @@ pipeline {
   agent any
   stages {
     stage('stashing') {
-      when {
-        branch 'master'
-      }
+      // when {
+      //   branch 'master'
+      // }
       options {
+        // syntax for git pull
         skipDefaultCheckout(true)
       }
       steps {
@@ -16,6 +17,10 @@ pipeline {
     stage('artifact and docker') {
       parallel {
         stage('create artifact') {
+          options {
+            // syntax for git pull
+            skipDefaultCheckout(true)
+          }
           steps {
             sh 'echo "artifact"'
             archiveArtifacts(artifacts: 'app/build/libs/', allowEmptyArchive: true)
@@ -23,6 +28,10 @@ pipeline {
         }
 
         stage('dockerize application') {
+          options {
+            // syntax for git pull
+            skipDefaultCheckout(true)
+          }
           when {
             branch 'master'
           }
@@ -36,7 +45,6 @@ pipeline {
             sh 'push-docker.sh'
           } 
         }
-
       }
     }
 
