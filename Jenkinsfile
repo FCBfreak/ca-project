@@ -18,7 +18,9 @@ pipeline {
           }
           steps {
             unstash 'code'
-            zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
+            script {
+              zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
+            }
             archiveArtifacts artifacts: 'artifact.zip', fingerprint: true
           }
         }
