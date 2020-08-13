@@ -4,10 +4,15 @@ pipeline {
   }
   agent any
   stages {
-    stage('artifact and docker') {
+    stage('stashing'){
+      when {
+        branch 'master'
+      }
       steps {
         stash 'code'
       }
+    }
+    stage('artifact and docker') {
 
       parallel {
         stage('create artifact') {
@@ -32,7 +37,6 @@ pipeline {
             sh 'echo "pushed to docker!"'
           }
         }
-
       }
     }
   }
