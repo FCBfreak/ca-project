@@ -9,6 +9,12 @@ pipeline {
         stash(excludes: '.git', name: 'code')
       }
     }
+    
+    stage('component test') {
+      steps {
+        sh './component-test.sh'
+      }
+    }
 
     stage('artifact and docker') {
       parallel {
