@@ -10,6 +10,17 @@ pipeline {
       }
     }
 
+    stage('zip arhive') {
+      options {
+        skipDefaultCheckout(true)
+      }
+      steps {
+            unstash 'code'
+            sh 'sudo apt install zip -y'
+            sh 'zip arhive.zip -r app'
+      }
+    }
+
     stage('artifact and docker') {
       parallel {
         stage('create artifact') {
@@ -18,10 +29,7 @@ pipeline {
           }
           steps {
             unstash 'code'
-            script {
-              zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
-            }
-            archiveArtifacts artifacts: 'artifact.zip', fingerprint: true
+            archiveArtifacts artifacts: 'arhive.zip', fingerprint: true
           }
         }
 

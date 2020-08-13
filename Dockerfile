@@ -16,4 +16,4 @@ WORKDIR /app
 COPY . /app
 
 # running main script
-ENTRYPOINT ["python", "run.py"]
+ENTRYPOINT ["python", "app/run.py"]
