@@ -1,10 +1,7 @@
 pipeline {
-  environment {
-    docker_username = 'emilkolvigraun'
-  }
   agent any
   stages {
-    stage('stashing'){
+    stage('stashing') {
       when {
         branch 'master'
       }
@@ -12,32 +9,37 @@ pipeline {
         stash 'code'
       }
     }
-    stage('artifact and docker') {
 
+    stage('artifact and docker') {
       parallel {
         stage('create artifact') {
           steps {
             sh 'echo "artifact"'
-            archiveArtifacts 'app/build/libs/'
+            archiveArtifacts 'app/build/libs/**'
           }
         }
 
         stage('dockerize application') {
-          environment {
-            DOCKERCREDS = credentials('docker_login')
-          }
           when {
             branch 'master'
+          }
+          environment {
+            DOCKERCREDS = credentials('docker_login')
           }
           steps {
             unstash 'code'
             sh 'ci/build-docker.sh'
-            sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin' //login to docker hub with the credentials above
+            sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
             sh 'ci/push-docker.sh'
             sh 'echo "pushed to docker!"'
           }
         }
+
       }
     }
+
+  }
+  environment {
+    docker_username = 'emilkolvigraun'
   }
 }
