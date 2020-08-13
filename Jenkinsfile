@@ -1,21 +1,15 @@
 pipeline {
-  environment {
-    docker_username = 'emilkolvigraun'
-  }
   agent any
   stages {
     stage('stashing') {
-      options {
-          skipDefaultCheckout(true)
-      }
       when {
         branch 'master'
       }
+      options {
+        skipDefaultCheckout(true)
+      }
       steps {
-        stash (
-          excludes: '.git',
-          name: 'code'
-        )
+        stash(excludes: '.git', name: 'code')
       }
     }
 
@@ -29,16 +23,16 @@ pipeline {
         }
 
         stage('dockerize application') {
-          environment {
-            DOCKERCREDS = credentials('docker_login')
-          }
           when {
             branch 'master'
+          }
+          environment {
+            DOCKERCREDS = credentials('docker_login')
           }
           steps {
             unstash 'code'
             sh 'ci/build-docker.sh'
-            sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
+            sh 'echo "$DOCKERCREDS_PSW" | docker_login -u "$DOCKERCREDS_USR" --password-stdin'
             sh 'ci/push-docker.sh'
             sh 'echo "pushed to docker!"'
           }
@@ -46,6 +40,9 @@ pipeline {
 
       }
     }
+
   }
-  
+  environment {
+    docker_username = 'emilkolvigraun'
+  }
 }
