@@ -13,14 +13,15 @@ pipeline {
     stage('artifact and docker') {
       parallel {
         stage('create artifact') {
-          // options {
-          //   skipDefaultCheckout(true)
-          // }
+          options {
+            skipDefaultCheckout(true)
+          }
           steps {
+            unstash 'code'
             script {
               zip archive: true, zipFile: 'archive.zip'
             }
-            unstash 'code'
+
           }
         }
 
