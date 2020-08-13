@@ -19,7 +19,7 @@ pipeline {
           steps {
             unstash 'code'
             script {
-              zip archive: true, zipFile: 'archive.zip'
+              zip archive: true, dir: 'src', zipFile: 'archive.zip'
             }
 
           }
