@@ -10,18 +10,6 @@ pipeline {
       }
     }
 
-    stage('zip arhive') {
-      options {
-        skipDefaultCheckout(true)
-      }
-      steps {
-            unstash 'code'
-            script {
-              zip archive: true, dir: 'app', glob: '**/py/**', zipFile: 'archive.zip'
-            }
-      }
-    }
-
     stage('artifact and docker') {
       parallel {
         stage('create artifact') {
@@ -30,7 +18,9 @@ pipeline {
           }
           steps {
             unstash 'code'
-            archiveArtifacts artifacts: 'arhive.zip', fingerprint: true
+            script {
+              zip archive: true, dir: 'app/*', glob: '**/py/**', zipFile: 'archive.zip'
+            }
           }
         }
 
