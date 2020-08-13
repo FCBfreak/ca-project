@@ -21,7 +21,6 @@ pipeline {
             script {
               zip archive: true, dir: 'src', zipFile: 'archive.zip'
             }
-
           }
         }
 
@@ -39,10 +38,8 @@ pipeline {
             sh './push-docker.sh'
           }
         }
-
       }
     }
-
   }
   environment {
     docker_username = 'emilkolvigraun'

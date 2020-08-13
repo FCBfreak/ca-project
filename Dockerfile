@@ -15,5 +15,7 @@ LABEL Name=ca-project Version=1.0
 WORKDIR /app
 COPY . /app
 
+EXPOSE 5000
+
 # running main script
 ENTRYPOINT ["python", "src/run.py"]
