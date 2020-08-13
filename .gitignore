@@ -1,7 +1,6 @@
 # Ignore python stuff
 __pycache__/
-*.py[cod]
-*$py.class
+
 
 # Ignore both app and test db
 app.db
