@@ -9,9 +9,9 @@ pipeline {
       options {
         skipDefaultCheckout(true)
       }
-      steps (
+      steps {
         sh 'echo "hello"'
-      )
+      }
     }
   }
 }
