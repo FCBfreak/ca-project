@@ -43,9 +43,9 @@ pipeline {
           steps {
             unstash 'code'
             sh 'ls'
-            sh 'build-docker.sh'
+            sh './build-docker.sh'
             sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
-            sh 'push-docker.sh'
+            sh './push-docker.sh'
           } 
         }
       }
