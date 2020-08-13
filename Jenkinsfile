@@ -15,7 +15,7 @@ pipeline {
         stage('create artifact') {
           steps {
             sh 'echo "artifact"'
-            archiveArtifacts 'app/build/libs/**'
+            archiveArtifacts(artifacts: 'app/build/libs/', allowEmptyArchive: true)
           }
         }
 
