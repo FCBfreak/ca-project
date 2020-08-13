@@ -10,7 +10,7 @@ pipeline {
         stash(excludes: '.git', name: 'code')
       }
     }
-    
+
     stage('zip artifact') {
       options {
         // syntax for git pull
@@ -21,6 +21,7 @@ pipeline {
         script{
             zip archive: true, dir: 'app', glob: '', zipFile: 'artifact.zip'
           }
+        sh 'ls'
       }
     }
 
